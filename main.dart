@@ -1,5 +1,16 @@
 main() {
-  final listaConvertida = dadosTarefas.map((e) => Tarefa.fromMap(e)).toList();
+  final listaConvertida = dadosTarefas.map((e) => Tarefa.fromMap(e);
+  {
+   return Tarefa(
+    id: item['id'],
+    titulo: item['titulo'] ?? 'Sem título',
+    responsavel: item['responsavel'] ?? 'Não informado',
+    status: item['status'] ?? 'sem status',
+    prioridade: item['prioridade'] ?? 'sem prioridade',
+   
+);  
+
+  }).toList();
 }
 
 final List<Map<String, dynamic>> dadosTarefas = [
@@ -70,12 +81,12 @@ final List<Map<String, dynamic>> dadosTarefas = [
 
 class Tarefa {
   final int id;
-  final String titulo;
-  final String responsavel;
-  final String status;
-  final String prioridade;
-  final double valor;
-  final int horas;
+  final String? titulo;
+  final String? responsavel;
+  final String? status;
+  final String? prioridade;
+  final double? valor;
+  final int? horas;
 
   Tarefa({
     required this.id,
@@ -89,10 +100,10 @@ class Tarefa {
 
   Tarefa.fromMap(Map map)
     : id = map['id'],
-      titulo = map['titulo'],
-      responsavel = map['responavel'],
-      status = map['status'],
-      prioridade = map['prioridade'],
+      titulo = map['titulo'] ?? 'Sem título',
+      responsavel = map['responavel']?? 'Não informado',
+      status = map['status'] ?? 'sem status',
+      prioridade = map['prioridade']?? 'sem prioridade',
       valor = map['valor'],
       horas = map['horas'];
 }
