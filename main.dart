@@ -1,6 +1,20 @@
 main() {
   final listaConvertida = dadosTarefas.map((e) => Tarefa.fromMap(e)).toList();
-}
+
+  listaConvertida.forEach((element) => print(
+      'ID: ${element.id}\n'
+      'Título: ${element.titulo}\n' 
+      'Responsável: ${element.responsavel}\n'
+      'Status: ${element.status}\n'
+      'Prioridade: ${element.prioridade}\n'
+      'Valor: R\$${element.valor?.toStringAsFixed(2).replaceAll('.', ',')}\n'
+      'Horas: ${element.horas}\n'
+    ),
+   );  
+  }
+
+
+
 
 final List<Map<String, dynamic>> dadosTarefas = [
   {
@@ -87,12 +101,23 @@ class Tarefa {
     required this.horas,
   });
 
-  Tarefa.fromMap(Map map)
-    : id = map['id'],
-      titulo = map['titulo'],
-      responsavel = map['responavel'],
-      status = map['status'],
-      prioridade = map['prioridade'],
-      valor = map['valor'],
-      horas = map['horas'];
+  factory Tarefa.fromMap(Map map){
+    final valorSemRCifrao = map['valor'].toString().replaceAll('R\$', '');
+    final valorSemEspacos = valorSemRCifrao.trim();
+    final valorFormatado = valorSemEspacos.replaceAll(',','.');
+    final valorConvertido = double.tryParse(valorFormatado) ?? 0.0;
+    final horasConvertidas = int.tryParse(map['horas']?.toString() ?? '') ?? 0;
+
+    return Tarefa(
+      id: map['id'] ?? 0, 
+      titulo: map ['titulo']?.trim() ?? 'Sem título',
+      responsavel: map ['responsavel']?.trim() ?? 'Não informado', 
+      status: map ['status']?.trim() ?? 'Sem status',
+      prioridade: map ['prioridade']?.trim() ?? 'Sem prioridade',
+      valor: valorConvertido, 
+      horas: horasConvertidas,
+    );
+  }
 }
+
+  
