@@ -84,12 +84,12 @@ final List<Map<String, dynamic>> dadosTarefas = [
 
 class Tarefa {
   final int id;
-  final String titulo;
-  final String responsavel;
-  final String status;
-  final String prioridade;
-  final double valor;
-  final int horas;
+  final String? titulo;
+  final String? responsavel;
+  final String? status;
+  final String? prioridade;
+  final double? valor;
+  final int? horas;
 
   Tarefa({
     required this.id,
