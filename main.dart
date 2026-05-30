@@ -13,6 +13,9 @@ main() {
     ),
    );  
 
+
+
+
   final tarefasConcluidas = listaConvertida.where((tarefa) => tarefa.status == 'concluida',).toList();
   final tarefasPendentes = listaConvertida.where((tarefa) => tarefa.status == 'pendente',).toList();
   final tarefasEmAndamento = listaConvertida.where((tarefa) => tarefa.status == 'em andamento',).toList();
@@ -41,7 +44,6 @@ main() {
   tarefasPendentes.forEach((element){somaTarefasPendentes += element.valor ?? 0;});
   int quantidadeTarefasPendentes = tarefasPendentes.length;
   double mediaTarefasPendentes = quantidadeTarefasPendentes > 0 ? somaTarefasPendentes / quantidadeTarefasPendentes : 0;  
-
   if (quantidadeTarefasPendentes > 0)
     print (
       '\nMédia das tarefas pendentes: '
@@ -51,18 +53,53 @@ main() {
       'Não existem tarefas pendentes para calcular média.');
 
 
+
   Map<String, int> horasPorStatus = {};
   listaConvertida.forEach((element) {
   String status = element.status ?? 'Sem status';
   int horas = element.horas ?? 0;
-
   horasPorStatus[status] = (horasPorStatus[status] ?? 0) + horas;});
-  print('\nHoras por status:');
+   print('\nHoras por status:');
   horasPorStatus.forEach((status, horas) {print('$status: $horas horas');});
-  }
-
+  
 
   
+  dadosTarefas.forEach((tarefa) {List<String> dadosIncompletos = [];
+
+  if (tarefa['titulo'] == null) {
+    dadosIncompletos.add('título ausente');
+  }
+
+  if (tarefa['responsavel'] == null) {
+    dadosIncompletos.add('responsável ausente');
+  }
+
+  if (tarefa['horas'] == null) {
+    dadosIncompletos.add('horas ausentes');
+  }
+
+  if (tarefa['status'] == null ||
+      tarefa['status'].toString().trim().isEmpty) {
+    dadosIncompletos.add('status ausente');
+  }
+
+  if (dadosIncompletos.isNotEmpty) {
+    print('\n- ID ${tarefa['id']}: ${dadosIncompletos.join(' ou ')}');
+  }
+  });
+
+
+Set<String> statusEncontrados = {};
+listaConvertida.forEach((tarefa) {statusEncontrados.add(tarefa.status.toString());});
+print('\nStatus encontrados:');
+statusEncontrados.forEach((status) {print(status);});
+
+
+
+
+
+
+}  
 
 
 
