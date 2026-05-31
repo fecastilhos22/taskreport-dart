@@ -120,6 +120,15 @@ Durante o desenvolvimento foram utilizadas branches para separar funcionalidades
 
 O planejamento das atividades foi realizado utilizando Kanban, permitindo acompanhar o progresso das funcionalidades desenvolvidas durante o projeto.
 
----
+https://trello.com/invite/b/6a15a91ccdced7afa80bde65/ATTIa4adfbb35420d27472e889509932afeb12B8D063/taskreport-dart-simulador-de-tratamento-de-dados-de-tarefas-mobile
 
+
+---
+🔗 Repositório
+
+https://github.com/fecastilhos22/taskreport-dart
+
+🎥 Vídeo de Apresentação
+
+https://drive.google.com/file/d/1W7UAdPQI0TEkUnj7C1w2YH-AGmPbUChM/view?usp=sharing
 
