@@ -1,3 +1,56 @@
+class Tarefa extends ItemTrabalho {
+  final String? responsavel;
+  final String? status;
+  final String? prioridade;
+  final double? valor;
+  final int? horas;
+
+  Tarefa({
+    required int id,
+    required String titulo,
+    required this.responsavel,
+    required this.status,
+    required this.prioridade,
+    required this.valor,
+    required this.horas,
+  }): super(id: id, titulo: titulo,);
+
+  factory Tarefa.fromMap(Map map){
+    final valorSemRCifrao = map['valor'].toString().replaceAll('R\$', '');
+    final valorSemEspacos = valorSemRCifrao.trim();
+    final valorFormatado = valorSemEspacos.replaceAll(',','.');
+    final valorConvertido = double.tryParse(valorFormatado) ?? 0.0;
+    final horasConvertidas = int.tryParse(map['horas']?.toString() ?? '') ?? 0;
+
+    return Tarefa(
+      id: map['id'] ?? 0, 
+      titulo: map ['titulo']?.trim() ?? 'Sem título',
+      responsavel: map ['responsavel']?.trim() ?? 'Não informado', 
+      status: map ['status']?.trim() ?? 'Sem status',
+      prioridade: map ['prioridade']?.trim() ?? 'Sem prioridade',
+      valor: valorConvertido, 
+      horas: horasConvertidas,
+      );
+    }
+  @override
+  void exibirResumo() {
+    print('Tarefa $id - $titulo | Status: $status | Valor: R\$ $valor');}}
+
+class ItemTrabalho {
+  int id;
+  String titulo;
+  ItemTrabalho({
+   required this.id,
+   required this.titulo,
+  });
+  void exibirResumo() {print('Item $id - $titulo');
+  }
+ }
+ class RelatorioTarefas {
+  final List<Tarefa> _tarefas;
+  RelatorioTarefas(List<Tarefa> tarefas): _tarefas = tarefas;
+  int get quantidadeTotal => _tarefas.length;
+}
 
 main() {
   final listaConvertida = dadosTarefas.map((e) => Tarefa.fromMap(e)).toList();
@@ -63,7 +116,7 @@ main() {
   horasPorStatus.forEach((status, horas) {print('$status: $horas horas');});
   
 
-  
+  List<String> tarefasIncompletas = [];
   dadosTarefas.forEach((tarefa) {List<String> dadosIncompletos = [];
 
   if (tarefa['titulo'] == null) {
@@ -84,22 +137,38 @@ main() {
   }
 
   if (dadosIncompletos.isNotEmpty) {
-    print('\n- ID ${tarefa['id']}: ${dadosIncompletos.join(' ou ')}');
+    tarefasIncompletas.add(
+    'ID ${tarefa['id']}: ${dadosIncompletos.join(' ou ')}');
   }
-  });
+});
+
+ Set<String> statusEncontrados = {};
+ listaConvertida.forEach((tarefa) {statusEncontrados.add(tarefa.status.toString());});
+  print('\nStatus encontrados:');statusEncontrados.forEach((status) {print(status);});
 
 
-Set<String> statusEncontrados = {};
-listaConvertida.forEach((tarefa) {statusEncontrados.add(tarefa.status.toString());});
-print('\nStatus encontrados:');
-statusEncontrados.forEach((status) {print(status);});
+  print('\nResumo das tarefas:');
+ listaConvertida.forEach((tarefa) {tarefa.exibirResumo();});
 
+ RelatorioTarefas relatorio =
+    RelatorioTarefas(listaConvertida);
+  print('\nQuantidade total de tarefas: ${relatorio.quantidadeTotal}');
 
+  print('\nRELATÓRIO FINAL DE TAREFAS');
+  print('\nTotal de tarefas analisadas: ${listaConvertida.length}');
+  print('Tarefas concluídas: ${tarefasConcluidas.length}');
+  print('Tarefas pendentes: ${tarefasPendentes.length}');
+  print('Tarefas em andamento: ${tarefasEmAndamento.length}');
+  print('Tarefas canceladas: ${tarefasCancelada.length}');
 
+  print('\nValor total das concluídas: ''R\$ ${totalTarefasConcluidas.toStringAsFixed(2)}');
+  print('Média de valor das pendentes: ''R\$ ${mediaTarefasPendentes.toStringAsFixed(2)}');
+  print('Total de horas concluídas: ''${horasPorStatus['concluida'] ?? 0}');
 
+  print('\nStatus encontrados:');statusEncontrados.forEach((status) {print(status);});
+  print('\nTarefas com dados incompletos:');tarefasIncompletas.forEach((item) {print(item);});
 
-
-}  
+}
 
 
 
@@ -169,42 +238,3 @@ final List<Map<String, dynamic>> dadosTarefas = [
   },
 ];
 
-class Tarefa {
-  final int id;
-  final String? titulo;
-  final String? responsavel;
-  final String? status;
-  final String? prioridade;
-  final double? valor;
-  final int? horas;
-
-  Tarefa({
-    required this.id,
-    required this.titulo,
-    required this.responsavel,
-    required this.status,
-    required this.prioridade,
-    required this.valor,
-    required this.horas,
-  });
-
-  factory Tarefa.fromMap(Map map){
-    final valorSemRCifrao = map['valor'].toString().replaceAll('R\$', '');
-    final valorSemEspacos = valorSemRCifrao.trim();
-    final valorFormatado = valorSemEspacos.replaceAll(',','.');
-    final valorConvertido = double.tryParse(valorFormatado) ?? 0.0;
-    final horasConvertidas = int.tryParse(map['horas']?.toString() ?? '') ?? 0;
-
-    return Tarefa(
-      id: map['id'] ?? 0, 
-      titulo: map ['titulo']?.trim() ?? 'Sem título',
-      responsavel: map ['responsavel']?.trim() ?? 'Não informado', 
-      status: map ['status']?.trim() ?? 'Sem status',
-      prioridade: map ['prioridade']?.trim() ?? 'Sem prioridade',
-      valor: valorConvertido, 
-      horas: horasConvertidas,
-    );
-  }
-}
-
-  
